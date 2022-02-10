@@ -70,7 +70,7 @@ $_SESSION["s_task_id"] = $cls_Task->s_id;
 			<div class='pb-v-text' id="progress">
 			  Твій прогрес:
 			  <script type="module">
-					import {testGet} from "../../_js/firebaseAuth.js";
+					import {testGet} from "../../_js/firebase.js";
 
 					const taskPath = window.location.href;
 					// розділяє стрічку по "/" на масив стрічок
@@ -89,9 +89,10 @@ $_SESSION["s_task_id"] = $cls_Task->s_id;
 					// назва загального об'єкту в якому вкладені теми завдань 
 					const taskedDefaultPath = "tasks"
 
-					//console.log(await testGet(taskedDefaultPath, lessonName, taskNumber))
+					console.log(await testGet(taskedDefaultPath, lessonName, taskNumber))
 	  				var percentFromBD = await testGet(taskedDefaultPath, lessonName, taskNumber);
 					// this.innerHTML = percentFromBD;
+					console.log(percentFromBD);
 					document.getElementById("progress").innerText += " " + percentFromBD + "%";
 					if(percentFromBD < 90){
 						document.getElementById("progress").parentElement.style.width = percentFromBD + "%";
@@ -347,7 +348,7 @@ $_SESSION["s_task_id"] = $cls_Task->s_id;
   //<!-- Initialize highlight -->
   hljs.initHighlightingOnLoad();
 	//---------------------------------------------------------------
-  	import {testSend, testGet} from "../../_js/firebaseAuth.js";
+  	import {testSend, testGet, pseudoValidation} from "../../_js/firebase.js";
   	//Зчитування проценту з бази даних
 
  //Визначення назви уроку та номеру завдання 	
@@ -359,32 +360,45 @@ $_SESSION["s_task_id"] = $cls_Task->s_id;
 	}else{
 		echo("undefined");
 	} ?>;
+	// testGet()
+
+	const validation = async function(e) {
+		const percent = this.percent;
+
+		const tasklets = (taskPath.split('/'))[5].split('_');
+		// // з'єднує номер та назву теми завдання
+		const lessonName = tasklets[0] + "_" + tasklets[1];
+		// // номер конкретного завдання
+		const taskNumber = tasklets[2];
+		// // назва загального об'єкту в якому вкладені теми завдань 
+		const taskedDefaultPath = "tasks"
+
+		// var percentFromBD = await testGet(taskedDefaultPath, lessonName, taskNumber)
+		// console.log(percentFromBD);
+		// // для того, щоб оновити конкретне значення в вкладеному об'єкті,
+		// // потрібно вказати шлях до значення через крапку ("tasks.01_Form.00")
+		// // для того щоб, посилати змінні в назву значення в цьому об'єкті,
+		// // усю назву потрібно закрити в "[]" (приклад:
+		// // ["theObjectName" + "theNestedObject" + "propertyName")
+		console.log(percent);
+		const taskedPath = { [`${taskedDefaultPath}.${lessonName}.${taskNumber}`]: percent }
+		// const omegaTaskedPath = theTaskToUpdate(taskPath, 3, "tasks", percent);
+		if(percent !== undefined && percent !== 0){
+			const oldLocaDoc = JSON.parse(localStorage.getItem("userData"));
+			oldLocaDoc[taskedDefaultPath][lessonName][taskNumber] = percent;
+			localStorage.setItem("userData", JSON.stringify(oldLocaDoc));
+			await testSend(taskedPath);
+        	window.location.reload();
+		}
+	};
+
+	pseudoValidation(validation);
 	// розділяє стрічку по "/" на масив стрічок
 	// розділяє стрічку (третій елемент в попередньому масиві) по "_" на масив даних завдання (
 	// 0: номер теми завдання
 	// 1: названня теми завдання
 	// 2: номер конкретного завдання)
 	// посилання має зпочатку символ "/", тому першим значеням в масиві буде пуста стрічка
-	const tasklets = (taskPath.split('/'))[5].split('_');
-	// // з'єднує номер та назву теми завдання
-	const lessonName = tasklets[0] + "_" + tasklets[1];
-	// // номер конкретного завдання
-	const taskNumber = tasklets[2];
-	// // назва загального об'єкту в якому вкладені теми завдань 
-	const taskedDefaultPath = "tasks"
-
-	// var percentFromBD = await testGet(taskedDefaultPath, lessonName, taskNumber)
-  	// console.log(percentFromBD);
-	// // для того, щоб оновити конкретне значення в вкладеному об'єкті,
-	// // потрібно вказати шлях до значення через крапку ("tasks.01_Form.00")
-	// // для того щоб, посилати змінні в назву значення в цьому об'єкті,
-	// // усю назву потрібно закрити в "[]" (приклад:
-	// // ["theObjectName" + "theNestedObject" + "propertyName")
-	const taskedPath = { [`${taskedDefaultPath}.${lessonName}.${taskNumber}`]: percent }
-	// const omegaTaskedPath = theTaskToUpdate(taskPath, 3, "tasks", percent);
-	if(percent !== "undefined" && percent !== 0){
-		testSend(taskedPath);
-	}
   	
 	
 	// function theTaskToUpdate(thePath, thePlaceInPath, theTaskOutObj, result){
@@ -453,7 +467,7 @@ if($_SESSION["b_debug"] == true){
 </body>
 
 	<!--Google auth-->
-	<script type="module" src="../../_js/firebaseAuth.js"></script>
+	<script type="module" src="../../_js/firebase.js"></script>
 	
 
 

@@ -96,7 +96,7 @@ include_once("main_config.php");
   </body>
 
   	<!--Google auth-->
-	<script type="module" src="_js/firebaseAuth.js"></script>
+	<script type="module" src="_js/firebase.js"></script>
 	<!--Google Firestore-->	
 	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>

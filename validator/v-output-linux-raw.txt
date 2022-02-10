@@ -1,0 +1,17 @@
+﻿﻿fatal error: Exception has been thrown by the target of an invocation.
+
+Unhandled Exception:
+System.TypeInitializationException: The type initializer for 'System.Drawing.GDIPlus' threw an exception. ---> System.DllNotFoundException: libgdiplus.so.0 assembly:<unknown assembly> type:<unknown type> member:(null)
+  at (wrapper managed-to-native) System.Drawing.GDIPlus.GdiplusStartup(ulong&,System.Drawing.GdiplusStartupInput&,System.Drawing.GdiplusStartupOutput&)
+  at System.Drawing.GDIPlus..cctor () [0x000d4] in <728fbd68fe594062895e1f819791e76a>:0 
+   --- End of inner exception stack trace ---
+  at System.Drawing.Icon.Dispose () [0x00017] in <728fbd68fe594062895e1f819791e76a>:0 
+  at (wrapper remoting-invoke-with-check) System.Drawing.Icon.Dispose()
+  at System.Drawing.Icon.Finalize () [0x00000] in <728fbd68fe594062895e1f819791e76a>:0 
+[ERROR] FATAL UNHANDLED EXCEPTION: System.TypeInitializationException: The type initializer for 'System.Drawing.GDIPlus' threw an exception. ---> System.DllNotFoundException: libgdiplus.so.0 assembly:<unknown assembly> type:<unknown type> member:(null)
+  at (wrapper managed-to-native) System.Drawing.GDIPlus.GdiplusStartup(ulong&,System.Drawing.GdiplusStartupInput&,System.Drawing.GdiplusStartupOutput&)
+  at System.Drawing.GDIPlus..cctor () [0x000d4] in <728fbd68fe594062895e1f819791e76a>:0 
+   --- End of inner exception stack trace ---
+  at System.Drawing.Icon.Dispose () [0x00017] in <728fbd68fe594062895e1f819791e76a>:0 
+  at (wrapper remoting-invoke-with-check) System.Drawing.Icon.Dispose()
+  at System.Drawing.Icon.Finalize () [0x00000] in <728fbd68fe594062895e1f819791e76a>:0 
